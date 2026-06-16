@@ -28,10 +28,20 @@ pnpm --filter nextjs-example dev
 
 ## Publishing
 
-Deployment to npm is fully automated via GitHub Actions:
+Deployment to npm is fully automated via GitHub Actions with SLSA Provenance.
 
-- **`ci.yml`**: Verifies builds and test suites on Push & Pull Request.
-- **`publish.yml`**: Deploys `pg-sse` to npm (with provenance support) when a production release is published on GitHub.
+To release a new version:
+
+```bash
+# 1. Bump version locally (creates commit and tag automatically)
+pnpm version patch  # (or minor / major / specific version)
+
+# 2. Push both commit and tag to GitHub
+git push --follow-tags
+```
+
+3. Go to GitHub **Releases > Draft a new release**.
+4. Select your newly pushed tag (e.g., `v0.1.2`), fill in release notes using the prefilled template, and click **Publish release**.
 
 ## License
 
