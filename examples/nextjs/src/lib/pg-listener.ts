@@ -11,7 +11,7 @@ const connectionString =
 
 export const pgListener =
   globalForPgSse.pgListener ??
-  new PostgresSseListener(connectionString, "pg_sse_events");
+  new PostgresSseListener(connectionString, "db_changes");
 
 if (process.env.NODE_ENV !== "production") {
   globalForPgSse.pgListener = pgListener;

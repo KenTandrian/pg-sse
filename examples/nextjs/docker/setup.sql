@@ -11,7 +11,7 @@ CREATE OR REPLACE FUNCTION notify_table_update()
 RETURNS trigger AS $$
 BEGIN
   PERFORM pg_notify(
-    'pg_sse_events',
+    'db_changes',
     json_build_object(
       'table', TG_TABLE_NAME,
       'action', TG_OP,
