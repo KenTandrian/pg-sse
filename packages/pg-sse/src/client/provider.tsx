@@ -2,11 +2,11 @@
 
 import React, {
   createContext,
+  useCallback,
   useContext,
   useEffect,
-  useState,
   useRef,
-  useCallback,
+  useState,
 } from "react";
 import { ConnectionStatus, TabMultiplexer } from "./multiplexer";
 
@@ -144,4 +144,17 @@ export function useSubscription<T = unknown>(
     });
     return unsubscribe;
   }, [table, subscribe]);
+}
+
+export function useSseStatus(): {
+  status: ConnectionStatus;
+  eventCount: number;
+  activeConnections: number;
+} {
+  const context = useContext(SseContext);
+  if (!context) {
+    throw new Error("useSseStatus must be used within an SseProvider");
+  }
+  const { status, eventCount, activeConnections } = context;
+  return { status, eventCount, activeConnections };
 }

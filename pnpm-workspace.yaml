@@ -4,6 +4,7 @@ packages:
 
 allowBuilds:
   esbuild: true
+  sharp: true
 
 minimumReleaseAgeExclude:
   - '@vitest/expect@4.1.9'
