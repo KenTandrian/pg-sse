@@ -13,6 +13,7 @@ interface DatabaseNotification {
 export default function DashboardPage() {
   const [events, setEvents] = useState<DatabaseNotification[]>([]);
   const [subscriptionTable, setSubscriptionTable] = useState("users");
+  const [isDirty, setIsDirty] = useState(false);
   const [isSubscribed, setIsSubscribed] = useState(true);
 
   let sseStatus = "connected";
@@ -85,22 +86,38 @@ export default function DashboardPage() {
             Target Database Table
           </span>
 
-          <div className="flex items-center gap-3 mt-4">
+          <form
+            onSubmit={(e) => {
+              e.preventDefault();
+              const val = new FormData(e.currentTarget).get("table") as string;
+              if (val) {
+                setSubscriptionTable(val.replace(/[^a-zA-Z0-9_]/g, ""));
+                setIsDirty(false);
+              }
+            }}
+            className="flex items-center gap-2 mt-4"
+          >
             <input
-              type="text"
-              value={subscriptionTable}
+              name="table"
+              defaultValue={subscriptionTable}
               onChange={(e) =>
-                setSubscriptionTable(
-                  e.target.value.replace(/[^a-zA-Z0-9_]/g, ""),
-                )
+                setIsDirty(e.target.value.trim() !== subscriptionTable)
               }
               disabled={!isSubscribed}
               placeholder="e.g. users"
-              className="bg-neutral-950 border border-neutral-800 rounded-md px-3.5 py-2 text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus:outline-none focus:border-neutral-500 w-44 transition disabled:opacity-50"
+              className="bg-neutral-950 border border-neutral-800 rounded-md px-3 py-1.5 text-sm font-medium text-neutral-100 placeholder:text-neutral-600 focus:outline-none focus:border-neutral-500 w-36 transition disabled:opacity-50"
             />
             <button
+              type="submit"
+              disabled={!isSubscribed || !isDirty}
+              className="px-3 py-1.5 rounded-md text-xs font-medium bg-neutral-800 text-neutral-200 hover:bg-neutral-700 disabled:opacity-40 transition cursor-pointer"
+            >
+              Apply
+            </button>
+            <button
+              type="button"
               onClick={() => setIsSubscribed(!isSubscribed)}
-              className={`px-4 py-2 rounded-md text-xs font-medium transition cursor-pointer shadow-xs active:scale-95 ${
+              className={`px-3 py-1.5 rounded-md text-xs font-medium transition cursor-pointer shadow-xs active:scale-95 ${
                 isSubscribed
                   ? "bg-neutral-800 text-neutral-200 hover:bg-neutral-700"
                   : "bg-neutral-100 text-neutral-900 hover:bg-neutral-200 font-semibold"
@@ -108,7 +125,7 @@ export default function DashboardPage() {
             >
               {isSubscribed ? "Pause" : "Resume"}
             </button>
-          </div>
+          </form>
         </div>
       </div>
 
