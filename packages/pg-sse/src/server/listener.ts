@@ -39,7 +39,7 @@ export class PostgresSseListener implements SseListener {
 
   constructor(
     config: ClientConfig | string,
-    channels: string | string[] = "pg_sse_events",
+    channels: string | string[] = "db_changes",
   ) {
     this.config = config;
     this.channels = Array.isArray(channels) ? channels : [channels];

@@ -85,6 +85,12 @@ describe("PostgresSseListener", () => {
     ).toThrow();
   });
 
+  it("should default to db_changes channel if none specified", async () => {
+    const listener = new PostgresSseListener("postgres://localhost");
+    await listener.connect();
+    expect(getQueryMock()).toHaveBeenCalledWith("LISTEN db_changes");
+  });
+
   it("should connect, listen to channels, and emit connected event", async () => {
     const listener = new PostgresSseListener("postgres://localhost", [
       "ch1",

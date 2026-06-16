@@ -34,7 +34,7 @@ CREATE OR REPLACE FUNCTION notify_table_update()
 RETURNS trigger AS $$
 BEGIN
   PERFORM pg_notify(
-    'pg_sse_events',
+    'db_changes',
     json_build_object(
       'table', TG_TABLE_NAME,
       'action', TG_OP,
@@ -70,7 +70,7 @@ export const pgListener =
     {
       connectionString: process.env.DATABASE_URL,
     },
-    "pg_sse_events",
+    "db_changes",
   );
 
 if (process.env.NODE_ENV !== "production") {
@@ -180,7 +180,7 @@ PostgreSQL notification payloads have a standard size limit of **8000 bytes**. T
 Initializes a new DB event listener.
 
 - `config`: A `pg.ClientConfig` object or connection string.
-- `channels` (optional): Channel string or array of channel strings. Defaults to `"pg_sse_events"`.
+- `channels` (optional): Channel string or array of channel strings. Defaults to `"db_changes"`.
 
 #### `createSseHandler(listener, request)`
 
