@@ -38,16 +38,21 @@ export const SseProvider: React.FC<{
   // Handle status and active connection count updates
   const handleStatusChange = useCallback(
     (newStatus: ConnectionStatus, activeCount: number) => {
-      setStatus(newStatus);
       setActiveConnections(activeCount);
-
-      if (newStatus === "connecting") {
-        console.warn(`[pg-sse] Stream connection lost. Reconnecting...`);
-      } else if (newStatus === "connected") {
-        console.log(
-          `[pg-sse] Stream connected. Active client count: ${activeCount}`,
-        );
-      }
+      setStatus((prev) => {
+        if (newStatus === "connecting") {
+          if (prev === "connected") {
+            console.warn(`[pg-sse] Stream connection lost. Reconnecting...`);
+          } else if (prev === "disconnected") {
+            console.log(`[pg-sse] Connecting to stream...`);
+          }
+        } else if (newStatus === "connected" && prev !== "connected") {
+          console.log(
+            `[pg-sse] Stream connected. Active client count: ${activeCount}`,
+          );
+        }
+        return newStatus;
+      });
     },
     [],
   );
