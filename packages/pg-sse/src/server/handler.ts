@@ -19,7 +19,7 @@ export function createSseHandler(
 
   let isCleanedUp = false;
 
-  const cleanup = () => {
+  function cleanup() {
     if (isCleanedUp) return;
     isCleanedUp = true;
 
@@ -31,16 +31,16 @@ export function createSseHandler(
     } catch (err) {
       // Stream is already closed
     }
-  };
+  }
 
-  const send = (data: string) => {
+  function send(data: string) {
     if (isCleanedUp) return;
 
     writer.write(encoder.encode(data)).catch(() => {
       // Write failed, connection probably severed
       cleanup();
     });
-  };
+  }
 
   // Register client to receive broadcasts
   listener.registerClient(clientId, send);
