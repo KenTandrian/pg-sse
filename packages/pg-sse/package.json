@@ -61,5 +61,10 @@
     "notify"
   ],
   "author": "Kenrick Tandrian <kenricktan11@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KenTandrian/pg-sse.git",
+    "directory": "packages/pg-sse"
+  },
   "license": "MIT"
 }
