@@ -6,7 +6,9 @@ settings:
 
 importers:
 
-  .:
+  .: {}
+
+  packages/pg-sse:
     devDependencies:
       '@types/node':
         specifier: 25.9.3

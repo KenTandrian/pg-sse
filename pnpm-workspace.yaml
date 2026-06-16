@@ -1,5 +1,10 @@
+packages:
+  - 'packages/*'
+  - 'examples/*'
+
 allowBuilds:
   esbuild: true
+
 minimumReleaseAgeExclude:
   - '@vitest/expect@4.1.9'
   - '@vitest/mocker@4.1.9'
