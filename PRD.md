@@ -137,4 +137,4 @@ export function useSubscription(
 
 - **React Support:** Full support for React 19 (including Next.js 15+ Server Actions and Route Handlers).
 - **Compiler Compatibility:** Must compile with Next.js Turbopack (no dynamic `__dirname` requires or native dependencies).
-- **Target Exports:** Dual build targeting ESM and CommonJS exports.
+- **Target Exports:** ESM-only build (`.mjs` + `.d.mts`) via tsdown. CommonJS consumers on Node.js ≥ 22.12.0 can still `require()` it.
